@@ -4,8 +4,17 @@
   "version": "0.1.0",
   "type": "core",
   "description": "Receipt generation, storage, and retrieval core service",
-  "capabilities": [],
-  "dependencies": [],
+  "capabilities": [
+    "receipt-generation",
+    "tamper-detection",
+    "verification-primitives",
+    "public-verification",
+    "audit-linkage"
+  ],
+  "dependencies": [
+    "webwaka-core-identity",
+    "webwaka-core-audit"
+  ],
   "maintainers": [
     {
       "name": "ChangerPlanet Team",
