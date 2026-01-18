@@ -3,20 +3,23 @@
  */
 
 import { createHash } from 'crypto';
+import stringify from 'fast-json-stable-stringify';
 import { Receipt } from './types';
 
 /**
  * Compute a cryptographic hash of a receipt
  * 
- * This creates a deterministic hash of the receipt's immutable fields,
- * which can be used to detect tampering.
+ * This creates a deterministic hash of the receipt's IMMUTABLE fields only.
+ * Status and metadata are excluded because they change during lifecycle
+ * (void/refund) but the original transaction proof must remain valid.
+ * 
+ * Uses fast-json-stable-stringify for canonical JSON representation.
  */
 export function computeReceiptHash(receipt: Omit<Receipt, 'hash'>): string {
   const hashInput = {
     receiptId: receipt.receiptId,
     tenantId: receipt.tenantId,
     transactionId: receipt.transactionId,
-    status: receipt.status,
     issuedAt: receipt.issuedAt.toISOString(),
     issuedBy: receipt.issuedBy,
     lineItems: receipt.lineItems,
@@ -26,10 +29,9 @@ export function computeReceiptHash(receipt: Omit<Receipt, 'hash'>): string {
     currency: receipt.currency,
     paymentMethod: receipt.paymentMethod,
     auditEventId: receipt.auditEventId,
-    metadata: receipt.metadata,
   };
 
-  const canonical = JSON.stringify(hashInput, Object.keys(hashInput).sort());
+  const canonical = stringify(hashInput);
   return createHash('sha256').update(canonical).digest('hex');
 }
 

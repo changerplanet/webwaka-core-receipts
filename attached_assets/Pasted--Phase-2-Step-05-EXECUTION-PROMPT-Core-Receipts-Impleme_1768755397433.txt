@@ -1,0 +1,203 @@
+
+Phase 2 — Step 05 EXECUTION PROMPT
+
+Core Receipts Implementation
+
+⸻
+
+CONTEXT (AUTHORITATIVE — READ FIRST)
+
+You are implementing Phase 2 — Step 05 of the WebWaka Modular Rebuild.
+
+This step is STRICTLY LIMITED to implementing the Core Receipts module as a TypeScript-only, headless library.
+
+This is NOT:
+	•	A POS receipt UI
+	•	A printer module
+	•	A WhatsApp delivery module
+	•	A billing or invoicing system
+
+This is the canonical proof and verification layer used by ALL Suites (POS, SVM, MVM, ParkHub, Church, Political, Billing, etc.).
+
+⸻
+
+REPOSITORY (DO NOT DEVIATE)
+	•	GitHub Repo:
+https://github.com/changerplanet/webwaka-core-receipts
+	•	Repo is public
+	•	You MUST clone the repo first
+	•	You MUST push directly to main (branching not required)
+	•	Replit is authorized and preferred for this task
+
+⸻
+
+TECH STACK (FIXED)
+	•	Language: TypeScript
+	•	Project type: Headless library
+	•	No React
+	•	No FastAPI
+	•	No database assumptions
+	•	No deployment target
+	•	This package is meant to be imported by other modules
+
+⸻
+
+APPROVED OSS STACK (MANDATORY)
+
+You MUST use the following:
+	•	Node.js crypto → SHA-256 hashing
+	•	fast-json-stable-stringify → deterministic canonical JSON
+	•	Jest / Vitest → tests
+	•	No blockchain
+	•	No invoice engines
+	•	No QR libraries
+	•	No UI dependencies
+
+⸻
+
+REQUIRED MODULE RESPONSIBILITIES
+
+1. Receipt Creation
+
+Implement deterministic receipt generation:
+
+generateReceipt(input: CreateReceiptInput): Receipt
+
+	•	Canonical JSON → hash (SHA-256)
+	•	Immutable receipt content
+	•	Status initialized as ACTIVE
+	•	Tenant-isolated
+
+⸻
+
+2. Receipt Verification
+
+verifyReceipt(tenantId, receiptId): ReceiptVerificationResult
+verifyReceiptByCode(tenantId, receiptId, verificationCode)
+
+	•	Recompute hash
+	•	Detect tampering
+	•	Deterministic verification result
+
+⸻
+
+3. Public Verification (NO PII)
+
+getPublicReceiptData(tenantId, receiptId)
+
+Must return ONLY:
+	•	Amount
+	•	Currency
+	•	Date
+	•	Status
+	•	Verification result
+	•	Verification code
+
+Must NEVER return:
+	•	tenantId
+	•	userId
+	•	line items
+	•	internal metadata
+
+⸻
+
+4. Void & Refund (Event-Based)
+
+Receipts are IMMUTABLE.
+
+Implement:
+
+voidReceipt(input)
+refundReceipt(input)
+
+	•	Status changes recorded as events
+	•	Original hash remains provable
+	•	Full auditability preserved
+
+⸻
+
+5. Verification Codes
+	•	Derive short human-readable code from hash
+	•	Deterministic
+	•	No randomness
+	•	Format example: ABCD-1234
+
+⸻
+
+STORAGE ABSTRACTION (REQUIRED)
+
+Define interfaces only:
+
+ReceiptStorage
+
+Provide:
+	•	InMemoryReceiptStorage for tests
+
+No DB assumptions allowed.
+
+⸻
+
+DEPENDENCIES (DECLARE IN MANIFEST)
+
+The module MUST declare dependency on:
+	•	webwaka-core-audit
+	•	webwaka-core-identity
+
+No other WebWaka dependencies allowed.
+
+⸻
+
+TESTING (NON-NEGOTIABLE)
+
+You MUST include tests that prove:
+	1.	Receipt hash changes if content is altered
+	2.	Verification fails on tampering
+	3.	Public verification does not leak PII
+	4.	Void does not destroy history
+	5.	Refund creates verifiable state transition
+	6.	Tenant isolation is enforced
+	7.	Verification code maps correctly to receipt
+	8.	Hard Stop Condition (below)
+
+Coverage target:
+	•	≥ 80% across all metrics
+
+⸻
+
+🔴 HARD STOP CONDITION (MANDATORY)
+
+Implementation is NOT COMPLETE unless this test passes:
+
+“A Suite can generate a receipt for a transaction and later prove—cryptographically and deterministically—that the transaction occurred, has not been tampered with, belongs to the correct tenant, and can be publicly verified without exposing PII.”
+
+This must be proven in tests, not documentation.
+
+⸻
+
+FILES EXPECTED (MINIMUM)
+	•	src/receipt-service.ts
+	•	src/hash-utils.ts
+	•	src/types.ts
+	•	src/storage.ts
+	•	src/index.ts
+	•	tests/*.test.ts
+	•	module.manifest.json (updated with capabilities)
+	•	module.contract.md (updated)
+
+⸻
+
+OUTPUT EXPECTATION
+
+At completion, you MUST provide:
+	1.	Test results summary
+	2.	Coverage metrics
+	3.	Final commit SHA
+	4.	Explicit confirmation that Hard Stop Condition is met
+
+Then STOP.
+
+⸻
+
+DO NOT PROCEED TO STEP 06
+
+Unless explicitly authorized.
