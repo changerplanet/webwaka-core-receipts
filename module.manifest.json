@@ -1,0 +1,20 @@
+{
+  "id": "webwaka-core-receipts",
+  "name": "Core Receipts",
+  "version": "0.1.0",
+  "type": "core",
+  "description": "Receipt generation, storage, and retrieval core service",
+  "capabilities": [],
+  "dependencies": [],
+  "maintainers": [
+    {
+      "name": "ChangerPlanet Team",
+      "email": "changerplanet@gmail.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ChangerPlanet/webwaka-core-receipts"
+  },
+  "license": "MIT"
+}
