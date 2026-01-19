@@ -1,93 +1,45 @@
 # webwaka-core-receipts
 
-**Type:** core  
-**Description:** Receipt generation, storage, and retrieval core service
+**Economic & Value Ledger - Receipt generation and verification**
+
+## Overview
+
+This repository is part of the WebWaka Core Substrate. It provides shared services for the WebWaka platform.
 
 ## Status
 
-✅ **Phase 2.4 Complete** - Core receipts service implemented and tested.
+🚧 **Infrastructure Ready** - Implementation pending
 
-This module provides production-grade receipt generation and verification with cryptographic tamper detection and public verification without PII leakage.
+## Purpose
 
-## Features
+This is a **Core Module** in the WebWaka modular architecture:
 
-- **Receipt Generation**: Create tamper-evident receipts for transactions
-- **Tamper Detection**: Cryptographic hash-based verification
-- **Verification Code**: Human-readable codes (XXXX-XXXX format)
-- **Public Verification**: Verify receipts without exposing PII
-- **Audit Linkage**: Link receipts to audit events
-- **Status Management**: Support for voided and refunded receipts
+- **Classification:** `core`
+- **Prefix:** `webwaka-core-`
+- **Type:** Headless TypeScript library
+- **Consumers:** Suite modules (POS, SVM, MVM, etc.)
 
-## Installation
+## Integration
 
-```bash
-pnpm install
-```
+This module will be consumed by Suite modules through npm package installation or monorepo workspace dependencies. It does not provide UI components—only business logic and data access interfaces.
 
-## Usage
+## Dependencies
 
-```typescript
-import { ReceiptService, InMemoryReceiptStorage } from 'webwaka-core-receipts';
+- `webwaka-core-registry` - Module registration and capability resolution
 
-// Create service instance
-const receiptService = new ReceiptService({
-  storage: new InMemoryReceiptStorage(),
-});
+## Development
 
-// Generate a receipt
-const receipt = await receiptService.generateReceipt({
-  tenantId: 'tenant-1',
-  transactionId: 'txn-123',
-  issuedBy: 'user-1',
-  lineItems: [
-    {
-      description: 'Product A',
-      quantity: 2,
-      unitPrice: 500,
-      totalPrice: 1000,
-    },
-  ],
-  subtotal: 1000,
-  tax: 75,
-  total: 1075,
-  currency: 'NGN',
-  paymentMethod: 'cash',
-});
+This repository follows WebWaka governance standards:
 
-console.log(receipt.verificationCode); // e.g., "A3B4-C5D6"
-
-// Verify receipt
-const verification = await receiptService.verifyReceipt('tenant-1', receipt.receiptId);
-console.log(verification.valid); // true
-
-// Get public data (no PII)
-const publicData = await receiptService.getPublicReceiptData('tenant-1', receipt.receiptId);
-```
-
-## Testing
-
-```bash
-pnpm test
-```
-
-## Documentation
-
-- [Module Contract](./module.contract.md) - Defines the module's capabilities, dependencies, and API surface
-- [Changelog](./CHANGELOG.md) - Version history and changes
-- [Security Policy](./SECURITY.md) - Security guidelines and vulnerability reporting
-- [Owners](./OWNERS.md) - Maintainers and code review requirements
-
-## Module Manifest
-
-See `module.manifest.json` for the complete module specification.
-
-## Contributing
-
-This module follows the WebWaka architectural rules:
-- All changes must go through pull requests
-- CI/CD checks must pass before merging
-- Manifest validation is enforced automatically
+- All changes require PR review
+- CI must pass before merge
+- Main branch allows direct pushes (for now)
+- Automatic deployment via Vercel
 
 ## License
 
-MIT
+To be determined
+
+## Contact
+
+For questions or contributions, see OWNERS.md

@@ -1,29 +1,16 @@
 {
-  "id": "webwaka-core-receipts",
-  "name": "Core Receipts",
-  "version": "0.1.0",
-  "type": "core",
-  "description": "Receipt generation, storage, and retrieval core service",
-  "capabilities": [
-    "receipt-generation",
-    "tamper-detection",
-    "verification-primitives",
-    "public-verification",
-    "audit-linkage"
-  ],
-  "dependencies": [
-    "webwaka-core-identity",
-    "webwaka-core-audit"
-  ],
-  "maintainers": [
-    {
-      "name": "ChangerPlanet Team",
-      "email": "changerplanet@gmail.com"
-    }
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ChangerPlanet/webwaka-core-receipts"
-  },
-  "license": "MIT"
+  "moduleId": "webwaka-core-receipts",
+  "version": "0.0.0",
+  "class": "core",
+  "name": "Receipts Core",
+  "description": "Economic & Value Ledger - Receipt generation and verification",
+  "repository": "https://github.com/changerplanet/webwaka-core-receipts",
+  "author": "WebWaka Team",
+  "license": "TBD",
+  "capabilities": [],
+  "dependencies": [],
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "main": "./dist/index.js"
+  }
 }
